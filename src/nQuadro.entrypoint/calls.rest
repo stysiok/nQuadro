@@ -1,0 +1,15 @@
+@url = http://localhost:5000
+
+###
+GET {{url}}
+
+###
+GET {{url}}/api/v1/assets
+
+###
+POST {{url}}/api/v1/assets
+Content-Type: application/json
+
+{
+    "Name": "eth"
+}

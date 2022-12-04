@@ -9,5 +9,11 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="newtonsoft.json" Version="13.0.2" />
+    <PackageReference Include="scrutor" Version="4.2.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.80" />
+  </ItemGroup>
 
 </Project>
