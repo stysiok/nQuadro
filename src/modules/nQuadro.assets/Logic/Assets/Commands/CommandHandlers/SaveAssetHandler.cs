@@ -15,7 +15,7 @@ internal sealed class SaveAssetHandler : ICommandHandler<SaveAsset>
 
     public async Task HandleAsync(SaveAsset command)
     {
-        var asset = new Asset(command.Name);
+        var asset = new Asset(command.Name, command.Change, command.Start, command.End);
         await _assetsStorage.SaveAssetAsync(asset);
     }
 }

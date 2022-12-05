@@ -11,5 +11,8 @@ POST {{url}}/api/v1/assets
 Content-Type: application/json
 
 {
-    "Name": "eth"
+    "Name": "eth",
+    "Change": 0.05,
+    "Start": "2022-12-05T00:00:00",
+    "End": "2022-12-12T00:00:00"
 }
