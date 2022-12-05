@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NQuadro.Shared.CQRS;
+using NQuadro.Shared.Messaging;
 using NQuadro.Shared.Redis;
 using NQuadro.Shared.Serialization;
 using NQuadro.Shared.Storage;
@@ -16,6 +17,7 @@ public static class SharedExtensions
             .AddRedis(configuration)
             .AddStorage()
             .AddSerialization()
-            .AddCQRS();
+            .AddCQRS()
+            .AddMessaging();
     }
 }
