@@ -1,7 +1,7 @@
-namespace NQuadro.Monitors.HostedServices;
+namespace NQuadro.Monitors.Services;
 
 internal interface IAssetMonitorService
 {
     Task StartAsync(string assetName);
-    Task StopAsync();
+    Task StopAsync(string assetName);
 }

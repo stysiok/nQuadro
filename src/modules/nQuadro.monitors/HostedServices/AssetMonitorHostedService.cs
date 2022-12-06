@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Hosting;
 using NQuadro.Monitors.Channels;
+using NQuadro.Monitors.Services;
 
 namespace NQuadro.Monitors.HostedServices;
 
@@ -26,7 +27,7 @@ internal sealed class AssetMonitorHostedService : BackgroundService
                 if (message.StartMonitoring)
                     _ = monitor.Item1.StartAsync(message.AssetName);
                 else
-                    _ = monitor.Item1.StopAsync();
+                    _ = monitor.Item1.StopAsync(message.AssetName);
 
                 _monitors.Remove(message.AssetName, out var _);
                 _monitors.TryAdd(message.AssetName, new(monitor.Item1, message.StartMonitoring));

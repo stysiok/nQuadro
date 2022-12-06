@@ -1,4 +1,5 @@
 using NQuadro.Assets.Models;
+using NQuadro.Assets.Models.Events;
 using NQuadro.Assets.Storages;
 using NQuadro.Shared.CQRS;
 using NQuadro.Shared.Messaging;
@@ -20,6 +21,6 @@ internal sealed class SaveAssetHandler : ICommandHandler<SaveAsset>
     {
         var asset = new Asset(command.Name, command.Change, command.Start, command.End);
         await _assetsStorage.SaveAssetAsync(asset);
-        await _publisher.PublishAsync("new_asset_added", asset);
+        await _publisher.PublishAsync("asset_added", new AssetAdded(asset.Name));
     }
 }
