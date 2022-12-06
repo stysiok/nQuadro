@@ -16,3 +16,19 @@ Content-Type: application/json
     "Start": "2022-12-05T00:00:00",
     "End": "2022-12-12T00:00:00"
 }
+
+###
+POST {{url}}/api/v1/monitors/start
+Content-Type: application/json
+
+{
+    "Name": "eth3312"
+}
+
+###
+POST {{url}}/api/v1/monitors/stop
+Content-Type: application/json
+
+{
+    "Name": "eth"
+}

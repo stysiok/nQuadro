@@ -17,7 +17,7 @@ namespace NQuadro.Monitors.HostedServices
         {
             await _receiver.ReceiverAsync<Asset>("new_asset_added", (data) =>
             {
-                Console.WriteLine($"--- new asset {data.Name} ---");
+                Console.WriteLine($"--- new asset {data.Name} Monitors---");
             });
         }
     }
