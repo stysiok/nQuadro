@@ -29,7 +29,7 @@ public class AssetsController : ControllerBase
     {
         if (!ModelState.IsValid) return BadRequest(ModelState.ValidationState);
         if (string.IsNullOrWhiteSpace(body.Name)) return BadRequest("Name has to be different than null or white spaces");
-        var command = new SaveAsset(body.Name, body.Change, body.Start, body.End);
+        var command = new SaveAsset(body.Name, body.Change, body.End);
         await _dispatcher.SendAsync(command);
         return NoContent();
     }

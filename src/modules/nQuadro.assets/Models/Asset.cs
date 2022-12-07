@@ -1,4 +1,3 @@
-namespace NQuadro.Assets.Models
-{
-    internal sealed record Asset(string Name, decimal Change, DateTime Start, DateTime End);
-}
+namespace NQuadro.Assets.Models;
+
+internal sealed record Asset(string Name, double Change, DateTime End);

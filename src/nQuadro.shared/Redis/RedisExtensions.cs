@@ -9,7 +9,7 @@ public static class RedisExtensions
 {
     public static IServiceCollection AddRedis(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        var redisSection = configuration.GetSection("redis");
+        var redisSection = configuration.GetSection("Redis");
         if (redisSection is null) throw new Exception("Missing redis configuration section");
 
         var redisOptions = new RedisOptions();

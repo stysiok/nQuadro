@@ -14,6 +14,7 @@ public static class SharedExtensions
     {
         serviceCollection.AddControllers();
         return serviceCollection
+            .AddHttpClient()
             .AddRedis(configuration)
             .AddStorage()
             .AddSerialization()

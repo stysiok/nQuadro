@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddSharedComponents(builder.Configuration)
     .AddAssetsModule()
-    .AddMonitorsModule()
+    .AddMonitorsModule(builder.Configuration)
     .AddNotificationsModule();
 
 var app = builder.Build();
