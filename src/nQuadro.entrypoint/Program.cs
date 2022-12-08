@@ -14,6 +14,10 @@ builder.Services
 var app = builder.Build();
 
 app.UseRouting();
+app.UseCors(conf =>
+{
+    conf.AllowAnyOrigin();
+});
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
