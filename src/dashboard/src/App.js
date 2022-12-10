@@ -31,7 +31,14 @@ function App() {
         <Col sm={6} className="mt-3">
           <h2>Your current assets:</h2>
           {isLoading && <Spinner animation="border" />}
-          {!isLoading && assets.map((a) => <Asset {...a} key={a.name} />)}
+          {!isLoading &&
+            assets.map((a) => (
+              <Asset
+                {...a}
+                key={a.name}
+                onAssetStateChange={() => setIsLoading(true)}
+              />
+            ))}
         </Col>
         <Col sm={1} />
         <Col sm={5} className="mt-3">

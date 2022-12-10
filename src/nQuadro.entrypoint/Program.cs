@@ -18,6 +18,7 @@ app.UseCors(conf =>
 {
     conf.AllowAnyOrigin();
     conf.AllowAnyHeader();
+    conf.AllowAnyMethod();
 });
 app.UseEndpoints(endpoints =>
 {
