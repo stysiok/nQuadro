@@ -17,6 +17,7 @@ app.UseRouting();
 app.UseCors(conf =>
 {
     conf.AllowAnyOrigin();
+    conf.AllowAnyHeader();
 });
 app.UseEndpoints(endpoints =>
 {

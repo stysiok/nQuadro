@@ -1,4 +1,4 @@
-@url = http://localhost:5000
+@url = http://localhost:5005
 
 ###
 GET {{url}}
@@ -11,7 +11,7 @@ POST {{url}}/api/v1/assets
 Content-Type: application/json
 
 {
-    "Name": "TSLA",
+    "Name": "ETH",
     "Change": 0.05,
     "End": "2022-12-12T00:00:00"
 }
