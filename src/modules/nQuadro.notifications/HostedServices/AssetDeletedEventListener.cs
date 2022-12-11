@@ -6,13 +6,13 @@ using NQuadro.Shared.Messaging;
 
 namespace NQuadro.Notifications.HostedServices
 {
-    internal sealed class AssetAddedEventListener : BackgroundService
+    internal sealed class AssetDeletedEventListener : BackgroundService
     {
         private readonly IMessageReceiver _receiver;
-        private readonly ILogger<AssetAddedEventListener> _logger;
+        private readonly ILogger<AssetDeletedEventListener> _logger;
         private readonly IAssetNotificationsStorage _assetNotificationsStorage;
 
-        public AssetAddedEventListener(IMessageReceiver receiver, ILogger<AssetAddedEventListener> logger, IAssetNotificationsStorage assetNotificationsStorage)
+        public AssetDeletedEventListener(IMessageReceiver receiver, ILogger<AssetDeletedEventListener> logger, IAssetNotificationsStorage assetNotificationsStorage)
         {
             _receiver = receiver;
             _logger = logger;
@@ -21,10 +21,10 @@ namespace NQuadro.Notifications.HostedServices
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await _receiver.ReceiverAsync<AssetAdded>("asset_added", (data) =>
+            await _receiver.ReceiverAsync<AssetDeleted>("asset_deleted", (data) =>
             {
-                _logger.LogInformation("New asset added to the system {name}", data.Name);
-                _assetNotificationsStorage.AddNotificationsAsync(data.Name, new(false, false, false));
+                _logger.LogInformation("Deleted asset {name} from the notifications", data.Name);
+                _assetNotificationsStorage.DeleteNotificationsAsync(data.Name);
             });
         }
     }

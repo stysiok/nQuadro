@@ -20,6 +20,9 @@ internal sealed class Storage : IStorage
         await _db.StringSetAsync(key, jsonData);
     }
 
+    public Task DeleteAsync(string key) => _db.KeyDeleteAsync(key);
+
+
     public Task<bool> ExistsAsync(string key) => _db.KeyExistsAsync(key);
 
     public async Task<T?> GetAsync<T>(string key)
@@ -29,4 +32,5 @@ internal sealed class Storage : IStorage
 
         return _serialization.Deserialize<T>(data.ToString());
     }
+
 }

@@ -16,6 +16,6 @@ internal sealed class SetNotificationsHandler : ICommandHandler<SetNotifications
     public async Task HandleAsync(SetNotifications command)
     {
         NotificationsSettings notifications = new(command.Notifications.Email, command.Notifications.Sms, command.Notifications.Slack);
-        await _notificationsStorage.AddNotifications(command.AssetName, notifications);
+        await _notificationsStorage.AddNotificationsAsync(command.AssetName, notifications);
     }
 }

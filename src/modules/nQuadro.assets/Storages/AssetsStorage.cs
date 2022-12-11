@@ -26,4 +26,11 @@ internal sealed class AssetsStorage : IAssetsStorage
 
         await _storage.AddAsync(KEY, assets);
     }
+
+    public async Task DeleteAssetAsync(string assetName)
+    {
+        var assets = await GetAssetsAsync();
+        var newAssets = assets.Where(a => a.Name != assetName).ToList();
+        await _storage.AddAsync(KEY, newAssets);
+    }
 }

@@ -10,5 +10,6 @@ public static class NotificationsExtensions
         => serviceCollection
             .AddHostedService<AssetAddedEventListener>()
             .AddHostedService<AssetValueChangedEventListener>()
+            .AddHostedService<AssetDeletedEventListener>()
             .AddSingleton<IAssetNotificationsStorage, AssetNotificationsStorage>();
 }

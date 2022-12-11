@@ -34,4 +34,11 @@ public class AssetsController : ControllerBase
         return NoContent();
     }
 
+    [HttpDelete("{assetName}")]
+    public async Task<IActionResult> DeleteAssetAsync([FromRoute] string assetName)
+    {
+        await _dispatcher.SendAsync(new DeleteAsset(assetName));
+        return Accepted();
+    }
+
 }

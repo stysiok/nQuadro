@@ -6,4 +6,5 @@ internal interface IAssetsStorage
 {
     Task SaveAssetAsync(Asset asset);
     Task<IEnumerable<Asset>> GetAssetsAsync();
+    Task DeleteAssetAsync(string assetName);
 }

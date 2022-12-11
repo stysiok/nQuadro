@@ -167,6 +167,7 @@ const Asset = ({ name, onAssetStateChange }) => {
                       variant="danger"
                       className={"float-end"}
                       onClick={() => deleteAsset()}
+                      disabled={monitorActive.isRunning}
                     >
                       Delete asset
                     </Button>

@@ -23,6 +23,7 @@ public static class MonitorsExtensions
             .AddSingleton<IAssetMonitorsStorage, AssetMonitorsStorage>()
             .AddSingleton<IAssetPricingFeed, AssetPricingFeed>()
             .AddHostedService<AssetAddedEventListener>()
+            .AddHostedService<AssetDeletedEventListener>()
             .AddHostedService<AssetMonitorManager>();
     }
 

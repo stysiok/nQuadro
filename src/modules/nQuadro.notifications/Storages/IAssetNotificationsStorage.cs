@@ -4,6 +4,7 @@ namespace NQuadro.Notifications.Storages;
 
 internal interface IAssetNotificationsStorage
 {
-    Task AddNotifications(string assetName, NotificationsSettings notifications);
-    Task<NotificationsSettings> GetNotifications(string assetName);
+    Task AddNotificationsAsync(string assetName, NotificationsSettings notifications);
+    Task<NotificationsSettings> GetNotificationsAsync(string assetName);
+    Task DeleteNotificationsAsync(string assetName);
 }

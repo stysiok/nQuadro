@@ -21,6 +21,8 @@ internal sealed class AssetMonitorsStorage : IAssetMonitorsStorage
         _logger.LogInformation("Added asset {name} to monitors storage", assetName);
     }
 
+    public Task DeleteAssetMonitorAsync(string assetName) => _storage.DeleteAsync(assetName);
+
     public async Task<AssetMonitor?> GetAssetMonitorAsync(string assetName)
     {
         _logger.LogInformation("Getting asset {name} from storage", assetName);

@@ -15,7 +15,7 @@ internal sealed class GetNotificationsHandler : IQueryHandler<GetNotifications, 
 
     public async Task<NotificationDTO> HandleAsync(GetNotifications query)
     {
-        var settings = await _notificationsStorage.GetNotifications(query.AssetName);
+        var settings = await _notificationsStorage.GetNotificationsAsync(query.AssetName);
         return new NotificationDTO(settings.Email, settings.Sms, settings.Slack);
     }
 }
