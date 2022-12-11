@@ -31,3 +31,6 @@ Content-Type: application/json
 {
     "Name": "MartutCoin"
 }
+
+###
+GET {{url}}/api/v1/notifications/BTCUSD.AGR

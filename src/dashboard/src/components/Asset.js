@@ -26,7 +26,7 @@ const Asset = ({ name, onAssetStateChange }) => {
   useEffect(() => {
     if (!monitorActive.loaded && open) setMonitorStatus();
     if (!notifications.loaded && open) setNotificationState();
-  }, [open]);
+  }, [open, monitorActive.loaded, notifications.loaded]);
 
   const deleteAsset = async () => {
     await fetch(`http://localhost:5005/api/v1/assets/${name}`, {
@@ -44,9 +44,9 @@ const Asset = ({ name, onAssetStateChange }) => {
     );
     let notification = await notResult.json();
     setNotifications({
-      email: notification.Email,
-      slack: notification.Slack,
-      sms: notification.SMS,
+      email: notification.email,
+      slack: notification.slack,
+      sms: notification.sms,
     });
   };
 
@@ -78,19 +78,18 @@ const Asset = ({ name, onAssetStateChange }) => {
   };
 
   const changeNotificationState = async (newNotifications) => {
-    debugger;
     let headers = new Headers();
     headers.set("Content-Type", "application/json");
     await fetch(`http://localhost:5005/api/v1/notifications/${name}`, {
-      method: "GET",
+      method: "POST",
       headers: headers,
       body: JSON.stringify({
         Email: newNotifications.email,
-        SMS: newNotifications.sms,
+        Sms: newNotifications.sms,
         Slack: newNotifications.slack,
       }),
     });
-    setNotifications(notifications);
+    setNotifications(newNotifications);
   };
   return (
     <>
@@ -114,56 +113,65 @@ const Asset = ({ name, onAssetStateChange }) => {
             </Col>
             <Collapse in={open}>
               <div>
-                <InputGroup className="mb-3">
-                  <span className="d-flex align-items-center me-3">
-                    Notifications:
-                  </span>
-                  <InputGroup.Text>Email</InputGroup.Text>
-                  <InputGroup.Checkbox
-                    value={notifications.email}
-                    onChange={(e) =>
-                      changeNotificationState({
-                        ...notifications,
-                        email: e.target.value,
-                      })
-                    }
-                  />
-                  <span className="me-3"></span>
-                  <InputGroup.Text>SMS</InputGroup.Text>
-                  <InputGroup.Checkbox
-                    value={notifications.sms}
-                    onChange={(e) =>
-                      changeNotificationState({
-                        ...notifications,
-                        sms: e.target.value,
-                      })
-                    }
-                  />
-                  <span className="me-3"></span>
-                  <InputGroup.Text>Slack</InputGroup.Text>
-                  <InputGroup.Checkbox
-                    value={notifications.slack}
-                    onChange={(e) =>
-                      changeNotificationState({
-                        ...notifications,
-                        slack: e.target.value,
-                      })
-                    }
-                  />
-                </InputGroup>
-                <Button
-                  variant={monitorActive.isRunning ? "secondary" : "success"}
-                  onClick={() => changeMonitorState()}
-                >
-                  {monitorActive.isRunning ? "Stop" : "Start"} monitoring
-                </Button>
-                <Button
-                  variant="danger"
-                  className={"float-end"}
-                  onClick={() => deleteAsset()}
-                >
-                  Delete asset
-                </Button>
+                <Row className="mt-3">
+                  <Col>
+                    <span className="me-3">Notifications:</span>
+                    <Badge
+                      bg={notifications.email ? "success" : "secondary"}
+                      className="me-3"
+                      onClick={() =>
+                        changeNotificationState({
+                          ...notifications,
+                          email: !notifications.email,
+                        })
+                      }
+                    >
+                      Email {notifications.email ? "Active" : "Inactive"}
+                    </Badge>
+                    <Badge
+                      bg={notifications.sms ? "success" : "secondary"}
+                      className="me-3"
+                      onClick={() =>
+                        changeNotificationState({
+                          ...notifications,
+                          sms: !notifications.sms,
+                        })
+                      }
+                    >
+                      SMS {notifications.sms ? "Active" : "Inactive"}
+                    </Badge>
+                    <Badge
+                      bg={notifications.slack ? "success" : "secondary"}
+                      onClick={() =>
+                        changeNotificationState({
+                          ...notifications,
+                          slack: !notifications.slack,
+                        })
+                      }
+                    >
+                      Slack {notifications.slack ? "Active" : "Inactive"}
+                    </Badge>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col>
+                    <Button
+                      variant={
+                        monitorActive.isRunning ? "secondary" : "success"
+                      }
+                      onClick={() => changeMonitorState()}
+                    >
+                      {monitorActive.isRunning ? "Stop" : "Start"} monitoring
+                    </Button>
+                    <Button
+                      variant="danger"
+                      className={"float-end"}
+                      onClick={() => deleteAsset()}
+                    >
+                      Delete asset
+                    </Button>
+                  </Col>
+                </Row>
               </div>
             </Collapse>
           </Row>
