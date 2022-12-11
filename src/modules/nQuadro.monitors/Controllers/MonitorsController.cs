@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NQuadro.Monitors.Logic.Monitors.Commands;
+using NQuadro.Monitors.Logic.Monitors.Queries;
 using NQuadro.Monitors.Models.Requests;
 using NQuadro.Shared.CQRS;
 
@@ -13,6 +14,13 @@ public class MonitorsController : ControllerBase
     public MonitorsController(IDispatcher dispatcher)
     {
         _dispatcher = dispatcher;
+    }
+
+    [HttpGet("{asset}")]
+    public async Task<ActionResult<bool>> IsMonitoringOn([FromRoute] string asset)
+    {
+        var query = new IsMonitoringOn(asset);
+        return await _dispatcher.QueryAsync(query);
     }
 
     [HttpPost("start")]

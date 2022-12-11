@@ -13,37 +13,19 @@ import {
 const Asset = ({ name, onAssetStateChange }) => {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState({
+    loaded: false,
     email: false,
     slack: false,
     sms: false,
   });
-  const [monitorActive, setMonitor] = useState(false);
+  const [monitorActive, setMonitor] = useState({
+    loaded: false,
+    isRunning: false,
+  });
 
   useEffect(() => {
-    if (!open) return;
-    let fetchData = async () => {
-      let monitors = await fetch(
-        `http://localhost:5005/api/v1/monitors/${name}`,
-        {
-          method: "GET",
-        }
-      );
-      let notResult = await fetch(
-        `http://localhost:5005/api/v1/notifications/${name}`,
-        {
-          method: "GET",
-        }
-      );
-      let notification = await notResult.json();
-      let monitor = await notResult.text();
-      setNotifications({
-        email: notification.email,
-        slack: notification.Slack,
-        sms: notification.Sms,
-      });
-      setMonitor(monitor === "true");
-    };
-    fetchData();
+    if (!monitorActive.loaded && open) setMonitorStatus();
+    if (!notifications.loaded && open) setNotificationState();
   }, [open]);
 
   const deleteAsset = async () => {
@@ -53,16 +35,62 @@ const Asset = ({ name, onAssetStateChange }) => {
     onAssetStateChange();
   };
 
-  const changeMonitorState = async () => {
-    await fetch(
-      `http://localhost:5005/api/v1/assets/${name}/${
-        monitorActive ? "stop" : "start"
-      }`,
+  const setNotificationState = async () => {
+    let notResult = await fetch(
+      `http://localhost:5005/api/v1/notifications/${name}`,
       {
-        method: "PUT",
+        method: "GET",
       }
     );
-    onAssetStateChange();
+    let notification = await notResult.json();
+    setNotifications({
+      email: notification.Email,
+      slack: notification.Slack,
+      sms: notification.SMS,
+    });
+  };
+
+  const setMonitorStatus = async () => {
+    let monitors = await fetch(
+      `http://localhost:5005/api/v1/monitors/${name}`,
+      {
+        method: "GET",
+      }
+    );
+    var monitor = await monitors.text();
+    setMonitor({ loaded: true, isRunning: monitor === "true" });
+  };
+
+  const changeMonitorState = async () => {
+    let headers = new Headers();
+    headers.set("Content-Type", "application/json");
+    await fetch(
+      `http://localhost:5005/api/v1/monitors/${
+        monitorActive.isRunning ? "stop" : "start"
+      }`,
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({ Name: name }),
+      }
+    );
+    setMonitor({ loaded: true, isRunning: !monitorActive.isRunning });
+  };
+
+  const changeNotificationState = async (newNotifications) => {
+    debugger;
+    let headers = new Headers();
+    headers.set("Content-Type", "application/json");
+    await fetch(`http://localhost:5005/api/v1/notifications/${name}`, {
+      method: "GET",
+      headers: headers,
+      body: JSON.stringify({
+        Email: newNotifications.email,
+        SMS: newNotifications.sms,
+        Slack: newNotifications.slack,
+      }),
+    });
+    setNotifications(notifications);
   };
   return (
     <>
@@ -70,8 +98,8 @@ const Asset = ({ name, onAssetStateChange }) => {
         <Card.Body>
           <Row>
             <Col sm={10} className="d-flex align-items-center">
-              <Badge bg={monitorActive ? "success" : "secondary"}>
-                {monitorActive ? "Running" : "Stopped"}
+              <Badge bg={monitorActive.isRunning ? "success" : "secondary"}>
+                {monitorActive.isRunning ? "Running" : "Stopped"}
               </Badge>
               <span className="ms-3">{name}</span>
             </Col>
@@ -94,7 +122,7 @@ const Asset = ({ name, onAssetStateChange }) => {
                   <InputGroup.Checkbox
                     value={notifications.email}
                     onChange={(e) =>
-                      setNotifications({
+                      changeNotificationState({
                         ...notifications,
                         email: e.target.value,
                       })
@@ -105,9 +133,9 @@ const Asset = ({ name, onAssetStateChange }) => {
                   <InputGroup.Checkbox
                     value={notifications.sms}
                     onChange={(e) =>
-                      setNotifications({
+                      changeNotificationState({
                         ...notifications,
-                        email: e.target.value,
+                        sms: e.target.value,
                       })
                     }
                   />
@@ -116,18 +144,18 @@ const Asset = ({ name, onAssetStateChange }) => {
                   <InputGroup.Checkbox
                     value={notifications.slack}
                     onChange={(e) =>
-                      setNotifications({
+                      changeNotificationState({
                         ...notifications,
-                        email: e.target.value,
+                        slack: e.target.value,
                       })
                     }
                   />
                 </InputGroup>
                 <Button
-                  variant={monitorActive ? "secondary" : "success"}
+                  variant={monitorActive.isRunning ? "secondary" : "success"}
                   onClick={() => changeMonitorState()}
                 >
-                  {monitorActive ? "Stop" : "Start"} monitoring
+                  {monitorActive.isRunning ? "Stop" : "Start"} monitoring
                 </Button>
                 <Button
                   variant="danger"

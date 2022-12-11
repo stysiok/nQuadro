@@ -26,6 +26,7 @@ internal sealed class AssetMonitorService : IAssetMonitorService
     public async Task StartAsync(AssetMonitor assetMonitor)
     {
         _running = true;
+        await _assetMonitorsStorage.UpdateAssetMonitorAsync(assetMonitor with { IsRunning = true });
 
         while (_running)
         {
@@ -68,10 +69,10 @@ internal sealed class AssetMonitorService : IAssetMonitorService
         }
     }
 
-    public Task StopAsync(AssetMonitor assetMonitor)
+    public async Task StopAsync(AssetMonitor assetMonitor)
     {
         _logger.LogInformation("Stopping monitoring for {name}", assetMonitor.AssetName);
         _running = false;
-        return Task.CompletedTask;
+        await _assetMonitorsStorage.UpdateAssetMonitorAsync(assetMonitor with { IsRunning = false });
     }
 }

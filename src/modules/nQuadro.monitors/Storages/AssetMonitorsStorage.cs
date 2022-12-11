@@ -15,9 +15,9 @@ internal sealed class AssetMonitorsStorage : IAssetMonitorsStorage
         _logger = logger;
     }
 
-    public async Task AddAssetMonitorAsync(string assetName, double change, double currentPrice, DateTime end)
+    public async Task AddAssetMonitorAsync(string assetName, double change, double currentPrice, DateTime end, bool isRunning)
     {
-        await _storage.AddAsync<AssetMonitor>(assetName, new(assetName, change, currentPrice, end));
+        await _storage.AddAsync<AssetMonitor>(assetName, new(assetName, change, currentPrice, end, isRunning));
         _logger.LogInformation("Added asset {name} to monitors storage", assetName);
     }
 

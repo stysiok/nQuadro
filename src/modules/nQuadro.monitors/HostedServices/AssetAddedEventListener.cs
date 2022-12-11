@@ -35,7 +35,7 @@ namespace NQuadro.Monitors.HostedServices
                 if (currentPrice is null)
                     throw new Exception("Asset does not exists in the system");
 
-                await _assetMonitorsStorage.AddAssetMonitorAsync(assetAdded.Name, assetAdded.Change, currentPrice.Price, assetAdded.End);
+                await _assetMonitorsStorage.AddAssetMonitorAsync(assetAdded.Name, assetAdded.Change, currentPrice.Price, assetAdded.End, false);
 
                 _logger.LogInformation("Sending message to internal monitoring channel");
                 await _channel.Broker.Writer.WriteAsync(new(assetAdded.Name, StartMonitoring: true));
