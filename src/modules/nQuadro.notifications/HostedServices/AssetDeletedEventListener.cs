@@ -23,8 +23,8 @@ namespace NQuadro.Notifications.HostedServices
         {
             await _receiver.ReceiverAsync<AssetDeleted>("asset_deleted", (data) =>
             {
-                _logger.LogInformation("Deleted asset {name} from the notifications", data.Name);
                 _assetNotificationsStorage.DeleteNotificationsAsync(data.Name);
+                _logger.LogInformation("Deleted asset {name} from the notifications", data.Name);
             });
         }
     }

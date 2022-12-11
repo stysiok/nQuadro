@@ -23,8 +23,8 @@ namespace NQuadro.Notifications.HostedServices
         {
             await _receiver.ReceiverAsync<AssetAdded>("asset_added", (data) =>
             {
-                _logger.LogInformation("New asset added to the system {name}", data.Name);
                 _assetNotificationsStorage.AddNotificationsAsync(data.Name, new(false, false, false));
+                _logger.LogInformation("New asset added to the notification system {name}", data.Name);
             });
         }
     }
