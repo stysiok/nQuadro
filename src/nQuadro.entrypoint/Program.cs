@@ -9,7 +9,7 @@ builder.Services
     .AddSharedComponents(builder.Configuration)
     .AddAssetsModule()
     .AddMonitorsModule(builder.Configuration)
-    .AddNotificationsModule();
+    .AddNotificationsModule(builder.Configuration);
 
 var app = builder.Build();
 
